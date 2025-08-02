@@ -1,0 +1,41 @@
+/* 全体のコンテナ */
+.jupo-aspect-ratios-result {
+    background-color: #2a2a2a;
+    border-radius: 4px;
+    padding: 6px 8px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3); 
+    font-family: "Arial", sans-serif;
+}
+
+/* 各行（widthとheight） */
+.jupo-aspect-ratios-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    background-color: #3c3c3c; 
+    border: 1px solid #555; 
+    border-radius: 2px; 
+    padding: 4px 6px; 
+    margin: 2px 0; 
+    transition: background-color 0.2s ease; /* ホバー時の変化を滑らかに */
+}
+
+.jupo-aspect-ratios-row:hover {
+    background-color: #4a4a4a;
+}
+
+/* ラベル（width: と height:） */
+.jupo-aspect-ratios-label {
+    color: #b0b0b0; 
+    font-size: 12px; 
+    font-weight: normal; 
+    margin-right: 8px; 
+}
+
+/* 値（計算結果） */
+.jupo-aspect-ratios-value {
+    color: #ffffff; 
+    font-size: 12px; 
+    font-weight: bold; 
+    text-align: right; 
+}
