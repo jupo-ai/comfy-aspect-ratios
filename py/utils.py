@@ -11,6 +11,11 @@ def _name(name: str):
 def _dname(name: str):
     return name.replace(f"{author}.", "").replace(f"{packageName}.", "").replace("_", " ")
 
+def set_default_category(node_class_mappings: dict):
+    for cls in node_class_mappings.values():
+        if not hasattr(cls, "CATEGORY"):
+            setattr(cls, "CATEGORY", f"{author}/{packageName}")
+
 
 class Endpoint:
     def __init__(self):
