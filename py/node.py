@@ -4,7 +4,7 @@ from aiohttp import web
 from comfy.comfy_types import IO
 from nodes import EmptyLatentImage
 from .fields import Field
-from .utils import endpoint
+from .utils import endpoint, packageName
 
 ASPECT_RATIOS_PRESETS = [
     "none", 
@@ -77,8 +77,11 @@ def calc_resolution(base, fixed_side, step, aspectW, aspectH):
             width = base * aspectW / aspectH
     
     # stepで丸める
-    width = int(width // step * step)
-    height = int(height // step * step)
+    # fixed_side = noneのときはより厳密にアスペクト比を守る
+    step_w = math.lcm(step, aspectW) if fixed_side == "none" else step
+    step_h = math.lcm(step, aspectH) if fixed_side == "none" else step
+    width = int(width // step_w * step_w)
+    height = int(height // step_h * step_h)
 
     return width, height
 
