@@ -25,7 +25,12 @@ const extension = {
 
                 // アスペクト比入れ替えボタンを追加
                 // callbackは後程設定
-                this.switchButton = this.addWidget("button", "switch ⇅", null, null)
+                this.switchButton = this.addWidget("button", "switch ⇅", null, () => {
+                    const temp = this.aspectW.value;
+                    this.aspectW.value = this.aspectH.value;
+                    this.aspectH.value = temp;
+                    this.updateResult();
+                });
 
                 // 計算結果表示スペースのDOMを作成
                 const result = $el("div.jupo-aspect-ratios-result");
@@ -56,12 +61,6 @@ const extension = {
                 this.step.callback = () => this.updateResult();
                 this.aspectW.callback = () => this.updateResult();
                 this.aspectH.callback = () => this.updateResult();
-                this.switchButton.callback = () => {
-                    const temp = this.aspectW.value;
-                    this.aspectW.value = this.aspectH.value;
-                    this.aspectH.value = temp;
-                    this.updateResult();
-                };
                 this.preset.callback = async (preset) => {
                     const res = await api.fetchApi(_endpoint("aspect_ratios/preset"), {
                         method: "POST", 
