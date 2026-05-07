@@ -1,50 +1,50 @@
 from functools import wraps
-from aiohttp import web
 from server import PromptServer
+from pathlib import Path
 
-author = "jupo"
-packageName = "AspectRatios"
+AUTHOR = "jupo"
+ROOT_DIR = Path(__file__).parent.parent
 
-def _name(name: str):
-    return f"{author}.{packageName}.{name}"
+def mk_name(*args):
+    parts = [AUTHOR] + list(args)
+    return ".".join(parts)
 
-def _dname(name: str):
-    return name.replace(f"{author}.", "").replace(f"{packageName}.", "").replace("_", " ")
-
-def set_default_category(node_class_mappings: dict):
-    for cls in node_class_mappings.values():
-        if not hasattr(cls, "CATEGORY"):
-            setattr(cls, "CATEGORY", f"{author}/{packageName}")
+def mk_category(*args):
+    parts = [AUTHOR] + list(args)
+    return "/".join(parts)
 
 
 class Endpoint:
-    def __init__(self):
-        self.routes = PromptServer.instance.routes
+    routes = PromptServer.instance.routes
     
-    def _endpoint(self, part: str):
-        return f"/{author}/{packageName}/{part}"
+    @classmethod
+    def _endpoint(cls, *args):
+        parts = [AUTHOR] + list(args)
+        path = "/".join(parts)
+        return f"/{path}"
     
-    def get(self, path: str):
+    @classmethod
+    def get(cls, *args):
         """GETリクエスト用デコレータ"""
         def decorator(func):
             @wraps(func)
             def wrapper(*args, **kwargs):
                 return func(*args, **kwargs)
             
-            self.routes.get(self._endpoint(path))(wrapper)
+            cls.routes.get(cls._endpoint(*args))(wrapper)
             return wrapper
         return decorator
     
-    def post(self, path: str):
+    @classmethod
+    def post(cls, *args):
         """POSTリクエスト用デコレータ"""
         def decorator(func):
             @wraps(func)
             def wrapper(*args, **kwargs):
                 return func(*args, **kwargs)
             
-            self.routes.post(self._endpoint(path))(wrapper)
+            cls.routes.post(cls._endpoint(*args))(wrapper)
             return wrapper
         return decorator
 
-endpoint = Endpoint()
 
